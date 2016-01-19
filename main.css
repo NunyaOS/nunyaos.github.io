@@ -10,9 +10,11 @@ body {
 	padding: 5% 0;
 }
 
-.section-title {
-	font-size: 3em
+div.section-title {
+  font-size: 2em;
+  margin-bottom: 0.3em;
 }
 
+section.section-content { margin-bottom: 4em; }
 div.team-wrapper { text-align: center; }
 img.team-headshot { max-width: 75%; }
