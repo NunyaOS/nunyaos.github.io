@@ -1,6 +1,3 @@
-font-family: 'Open Sans', sans-serif;
-
-.vertical-center {
-    top: 50%;
-    position: absolute;
+html {
+	font-family: 'Open Sans', sans-serif;
 }
