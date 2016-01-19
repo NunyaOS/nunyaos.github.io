@@ -13,3 +13,6 @@ body {
 .section-title {
 	font-size: 3em
 }
+
+div.team-wrapper { text-align: center; }
+img.team-headshot { max-width: 75%; }
