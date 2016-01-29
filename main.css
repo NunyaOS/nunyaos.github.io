@@ -16,6 +16,7 @@ div.section-title {
   margin-bottom: 0.3em;
 }
 
+/*This is for the navbar overlapping*/
 .section-content:before {
   display: block;
   content: " ";
