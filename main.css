@@ -1,5 +1,6 @@
 body {
 	font-family: 'Open Sans', sans-serif;
+    padding-top: 60px; /*for navbar*/
 }
 
 .vcenter-child {
@@ -15,6 +16,15 @@ div.section-title {
   margin-bottom: 0.3em;
 }
 
+.section-content:before {
+  display: block;
+  content: " ";
+  margin-top: -75px;
+  height: 75px;
+  visibility: hidden;
+}
+
 section.section-content { margin-bottom: 4em; }
 div.team-wrapper { text-align: center; }
 img.team-headshot { max-width: 75%; }
+
