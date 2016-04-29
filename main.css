@@ -1,19 +1,6 @@
 body {
-	font-family: 'Open Sans', sans-serif;
-    padding-top: 60px; /*for navbar*/
-}
-
-.vcenter-child {
-	padding: 10% 0;
-}
-
-.vcenter-parent {
-	padding: 5% 0;
-}
-
-div.section-title {
-  font-size: 2em;
-  margin-bottom: 0.3em;
+  font-family: 'Open Sans', sans-serif;
+  padding-top: 60px; /*for navbar*/
 }
 
 /*This is for the navbar overlapping*/
@@ -25,7 +12,4 @@ div.section-title {
   visibility: hidden;
 }
 
-section.section-content { margin-bottom: 4em; }
-div.team-wrapper { text-align: center; }
-img.team-headshot { max-width: 75%; }
 

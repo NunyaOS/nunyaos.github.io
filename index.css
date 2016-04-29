@@ -1,0 +1,17 @@
+.vcenter-child {
+  padding: 10% 0;
+}
+
+.vcenter-parent {
+  padding: 5% 0;
+}
+
+div.section-title {
+  font-size: 2em;
+  margin-bottom: 0.3em;
+}
+
+
+section.section-content { margin-bottom: 4em; }
+div.team-wrapper { text-align: center; }
+img.team-headshot { max-width: 75%; }
