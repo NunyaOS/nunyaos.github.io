@@ -20,6 +20,7 @@
     <!--Style-->
     <link rel="stylesheet" href="../main.css">
     <link rel="stylesheet" href="docs.css">
+    <link rel="stylesheet" href="syscalls.css">
     <!-- Custom JS -->
   </head>
 
@@ -34,7 +35,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#home"><img src="../images/logo.svg" style="max-height: 70%"></a>
+          <a class="navbar-brand" href="http://nunyaos.github.io/#home"><img src="../images/logo.svg" style="max-height: 70%"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -66,19 +67,135 @@
         <div class="col-sm-9 col-sm-offset-1">
           <h1>NunyaOS System Calls</h1>
           <h3>What are these for?</h3>
-          <p>Many operations provided by the operating system are only accessible through what are called system calls. Features such as the clock, window drawing, and process creation are all administered by the kernel on a process' behalf. The system calls in NunyaOS also work to enforce the permissions that are so central to the vision of the project. Use the system calls provided in <code>syscall.h</code> to interact with the kernel when needed. Below are overviews of the modules provided by the system; dive into the header files of each module to see the functions provided.</p>
+          <p>Many operations provided by the operating system are only accessible through what are called system calls. Features such as the clock, window drawing, and process creation are all administered by the kernel on a process' behalf. The system calls in NunyaOS also work to enforce the permissions that are so central to the vision of the project. Use the system calls provided in <code>syscall.h</code> to interact with the kernel when needed. Below are overviews of the modules provided by the system; dive into the header files of each module to see the details of the functions provided.</p>
           <p>When writing processes, however, do not just include a single module; rather, include <code>syscall.h</code> to simply include the entire library of system calls. This decision was made to assert the namespace of the system calls and simplify the procedure for writing user processes.</p>
           <h1>System Call Modules</h1>
-          <h4><code>sys_process.h</code></h4>
-          <p>This module contains functions for the creation, suspension, and termination of processes. Use these functions when you want to create and run a child process.</p>
-          <h4><code>sys_permissions.h</code></h4>
-          <p>Use these functions to create and delete process capabilities, which are needed in order to declare the permissions of a child process.</p>
-          <h4><code>sys_memory.h</code></h4>
-          <p>Use this module to query the operating system for the memory usage of the current process. This information is important to know to ensure that the process and any potential children do not exceed the allocation. Additionally, this module enables editing of a process capability to change its maximum memory usage.</p>
-          <h4><code>sys_fs.h</code></h4>
-          <p>The functions in this module enable the opening, reading, and writing of files within the operating system, as well as editing the file permissions of a process capability.</p>
-          <h4><code>sys_window.h</code></h4>
-          <p>This module declares the functions related to window creation and drawing, as well as editing the graphics permissions of a process capability.</p>
+          <div class="row">
+            <div class="col-sm-4">
+              <p>
+                <a href="http://nunyaos.github.io/docs/syscalls.html#sys_process.h"><code><u>sys_process.h</u></code></a>
+              </p>
+              <p>
+                <a href="http://nunyaos.github.io/docs/syscalls.html#sys_permissions.h"><code><u>sys_permissions.h</u></code></a>
+              </p>
+              <p>
+                <a href="http://nunyaos.github.io/docs/syscalls.html#sys_memory.h"><code><u>sys_memory.h</u></code></a>
+              </p>
+            </div>
+            <div class="col-sm-4">
+              <p>
+                <a href="http://nunyaos.github.io/docs/syscalls.html#sys_fs.h"><code><u>sys_fs.h</u></code></a>
+              </p>
+              <p>
+                <a href="http://nunyaos.github.io/docs/syscalls.html#sys_window.h"><code><u>sys_window.h</u></code></a>
+              </p>
+              <p>
+                <a href="http://nunyaos.github.io/docs/syscalls.html#sys_rtc.h"><code><u>sys_rtc.h</u></code></a>
+              </p>
+            </div>
+            <div class="col-sm-4">
+              <p>
+                <a href="http://nunyaos.github.io/docs/syscalls.html#sys_clock.h"><code><u>sys_clock.h</u></code></a>
+              </p>
+            </div>
+          </div>
+          <section class="section-content" id="sys_process.h">
+            <hr>
+            <h4><code>sys_process.h</code></h4>
+            <p>This module contains functions for the creation, suspension, and termination of processes. Use these functions when you want to create and run a child process.</p>
+            <div class="syscall-list">
+              <code>int32_t run(char *process_path, uint32_t permissions_identifier)</code>
+              <p>This is how a process creates and runs a child process. Pass in the path of the executable and the identifier of the permissions capability, and the child process will begin execution.</p>
+              <code>int32_t exit(int32_t status)</code>
+              <p>Pass in the exit code of the process to end execution of the process and begin process cleanup. Ensure this function is called whenever a process terminates.</p>
+              <code>int32_t yield()</code>
+              <p>This function manually pauses execution of the current process and allows another process in the ready queue to execute.</p>
+            </div>
+          </section>
+          <section class="section-content" id="sys_permissions.h">
+            <hr>
+            <h4><code>sys_permissions.h</code></h4>
+            <p>Use these functions to create and delete process capabilities, which are needed in order to declare the permissions of a child process.</p>
+            <div class="syscall-list">
+              <code>int32_t permissions_capability_create()</code>
+              <p>This function creates a permissions capability and returns its identifier, which you can edit as needed and then pass to <code>run()</code>.</p>
+              <code>void permissions_capability_delete(uint32_t identifier)</code>
+              <p>Use this to delete any permissions capabilities you create. Capabilities count toward a process' memory allocation, so be sure to delete them to free up memory when no longer needed.</p>
+            </div>
+          </section>
+          <section class="section-content" id="sys_memory.h">
+            <hr>
+            <h4><code>sys_memory.h</code></h4>
+            <p>Use this module to query the operating system for the memory usage of the current process. This information is important to know to ensure that the process and any potential children do not exceed the allocation. Additionally, this module enables editing of a process capability to change its maximum memory usage.</p>
+            <div class="syscall-list">
+              <code>int32_t get_current_memory_usage()</code>
+              <p>Use this to query the system on how much memory the current process is using.</p>
+              <code>int32_t get_max_memory()</code>
+              <p>Use this to remind the current process of its maximum memory allocation.</p>
+              <code>int32_t capability_set_max_memory(uint32_t identifier, uint32_t pages)</code>
+              <p>This function is used to edit a permissions capability; pass in the capability identifier and the desired maximum number of pages, and processes created with that capability will be held to that maximum. The desired maximum cannot exceed that of the current process.</p>
+            </div>
+          </section>
+          <section class="section-content" id="sys_fs.h">
+            <hr>
+            <h4><code>sys_fs.h</code></h4>
+            <p>The functions in this module enable the opening, reading, and writing of files within the operating system, as well as editing the file permissions of a process capability.</p>
+            <div class="syscall-list">
+              <code>int32_t open(const char *path, const char *mode)</code>
+              <p>Pass in a path and a mode (reading, writing, etc) to open a file. The function returns a descriptor to be used in other file operations.</p>
+              <code>int32_t close(uint32_t fd)</code>
+              <p>This function closes an open file descriptor.</p>
+              <code>int32_t read(char *dest, uint32_t bytes, uint32_t fd)</code>
+              <p>Use this to read an amount from a file into a destination buffer.</p>
+              <code>int32_t write(const char *src, uint32_t bytes,  uint32_t fd)</code>
+              <p>Use this to write an amount from a source to a given file.</p>
+            </div>
+          </section>
+          <section class="section-content" id="sys_window.h">
+            <hr>
+            <h4><code>sys_window.h</code></h4>
+            <p>This module declares the functions related to window creation and drawing, as well as editing the graphics permissions of a process capability.</p>
+            <div class="syscall-list">
+              <code>int32_t create_window(int x, int y, uint32_t width, uint32_t height)</code>
+              <p>This function creates a window for a process to draw within.</p>
+              <code>int32_t clear()</code>
+              <p>This clears the content of the window.</p>
+              <code>int32_t get_event(struct event *e)</code>
+              <p>This queries the system for any events waiting in the process' queue, such as mouse clicks and keyboard strokes.</p>
+              <code>int32_t set_border_color(const struct graphics_color *border_color)</code>
+              <p>Use this to set the border color of the window.</p>
+              <code>iint32_t draw_line(int x1, int y1, int x2, int y2, const struct graphics_color *color)</code>
+              <p>This function draws a line in the desired color from one point to another.</p>
+              <code>int32_t draw_arc(int x, int y, const struct arc_info *arc, const struct graphics_color *c)</code>
+              <p>This draws a curved line with the given information and center.</p>
+              <code>draw_circle(int x, int y, const double *r, const struct graphics_color *c)</code>
+              <p>Use this to draw a circle with the specified information and center.</p>
+              <code>draw_char(int x, int y, char c, const struct graphics_color *fgcolor, const struct graphics_color *bgcolor)</code>
+              <p>This draws a character at the given location.</p>
+              <code>draw_string(int x, int y, const char *str, const struct graphics_color *fgcolor, const struct graphics_color *bgcolor)</code>
+              <p>Draw entire strings with this function.</p>
+            </div>
+          </section>
+          <section class="section-content" id="sys_rtc.h">
+            <hr>
+            <h4><code>sys_rtc.h</code></h4>
+            <p>Use the functions within this module to interact with the system's real-time clock (RTC).</p>
+            <div class="syscall-list">
+              <code>int32_t read_rtc(struct rtc_time *t)</code>
+              <p>Reads from the RTC and stores the information in the given struct.</p>
+            </div>
+          </section>
+          <section class="section-content" id="sys_clock.h">
+              <hr>
+              <h4><code>sys_clock.h</code></h4>
+              <p>To access the system's clock, use these functions.</p>
+              <div class="syscall-list">
+                <code>int32_t read_clock(clock_t *clock)</code>
+                <p>Reads from the system clock and stores the information in the given struct.</p>
+                <code>int32_t sleep(uint32_t half_millis)</code>
+                <p>Causes the current process to sleep for the given number of half-milliseconds.</p>
+              </div>
+            </section>
         </div>
       </section>
     </div>
